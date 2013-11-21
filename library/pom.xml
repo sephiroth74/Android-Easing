@@ -10,7 +10,7 @@
   <inceptionYear>2013</inceptionYear>
   <licenses>
     <license>
-      <name>Apach License, Version 2.0</name>
+      <name>The Apache Software License, Version 2.0</name>
       <url>http://www.apache.org/licenses/LICENSE-2.0</url>
       <distribution>repo</distribution>
     </license>
@@ -32,14 +32,4 @@
     <developerConnection>scm:git@github.com:sephiroth74/Android-Easing.git</developerConnection>
     <url>https://github.com/sephiroth74/Android-Easing</url>
   </scm>
-  <repositories>
-    <repository>
-      <id>aviary-release</id>
-      <url>http://maven.aviary.com/repo/release</url>
-    </repository>
-    <repository>
-      <id>aviary-snapshot</id>
-      <url>http://maven.aviary.com/repo/snapshot</url>
-    </repository>
-  </repositories>
 </project>
