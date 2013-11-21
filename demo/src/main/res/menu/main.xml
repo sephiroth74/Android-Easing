@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".MainActivity">
+
+    <item
+            android:id="@+id/ease_in"
+            android:title="EaseIn"
+            android:checked="true"
+            android:checkable="true"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+
+    <item
+            android:id="@+id/ease_out"
+            android:title="EaseOut"
+            android:checked="false"
+            android:checkable="true"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+
+    <item
+            android:id="@+id/ease_in_out"
+            android:title="EaseInOut"
+            android:checked="false"
+            android:checkable="true"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+</menu>

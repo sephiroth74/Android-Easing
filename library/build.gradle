@@ -1,0 +1,126 @@
+
+apply plugin: 'android-library'
+
+group 'it.sephiroth.android.library.easing'
+version '1.0.0'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "18.1.1"
+
+    defaultConfig {
+        minSdkVersion 7
+        targetSdkVersion 19
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            resources.srcDirs = ['src/main/java']
+            aidl.srcDirs = ['src/main/java']
+            renderscript.srcDirs = ['src/main/java']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['assets']
+        }
+    }
+}
+
+dependencies {
+}
+
+
+def generatePom() {
+    def pom = pom {
+        project {
+            groupId project.group
+            artifactId project.name
+            version project.version
+            description 'Light weight easing for Android'
+            inceptionYear '2013'
+            url 'http://blog.sephiroth.it'
+
+            licenses {
+                license {
+                    name 'Apach License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0'
+                    distribution 'repo'
+                }
+            }
+
+            scm {
+                url                 "https://github.com/sephiroth74/Android-Easing"
+                connection          "scm:git@github.com:sephiroth74/Android-Easing.git"
+                developerConnection "scm:git@github.com:sephiroth74/Android-Easing.git"
+            }
+
+
+            developers {
+                developer {
+                    id 'sephiroth74'
+                    name 'Alessandro Crugnola'
+                    email 'alessandro.crugnola@gmail.com'
+                    url 'http://blog.sephiroth.it'
+                    roles {
+                        role 'author'
+                        role 'developer'
+                    }
+                }
+            }
+
+            repositories {
+                project.repositories.each { repo ->
+
+                    if (repo.name != 'MavenRepo' && repo.name != 'MavenLocal' && !repo.url.toString().startsWith('file:/') ) {
+                        repository {
+                            id = repo.name
+                            url = repo.url
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+task writePom {
+    ext.pomXml = file("pom.xml")
+    inputs.file(project.buildFile)
+    outputs.file(pomXml)
+    doLast {
+        generatePom().writeTo(pomXml)
+    }
+}
+
+
+uploadArchives {
+    repositories {
+        if( project.hasProperty('username') && project.hasProperty('password')) {
+
+
+            mavenDeployer {
+                pom = generatePom()
+                configuration = configurations.deployerJars
+
+                repository(url: mavenUploadServer + mavenRepo + mavenReleases){
+                    authentication(userName: username, password: password)
+                }
+
+                snapshotRepository(url: mavenUploadServer + mavenRepo + mavenSnapshot){
+                    authentication(userName: username, password: password)
+                }
+            }
+        } else {
+        }
+    }
+
+    doLast {
+        if( !project.hasProperty('username') || !project.hasProperty('password')) {
+            logger.error '\tError: Cannot upload artifacts, username and password missing'
+        }
+    }
+}
+
+build.dependsOn(writePom)
+uploadArchives.dependsOn(build)
