@@ -1,8 +1,10 @@
 
+apply plugin: 'maven'
+apply plugin: 'signing'
 apply plugin: 'android-library'
 
 group 'it.sephiroth.android.library.easing'
-version '1.0.0'
+version '1.0.0-SNAPSHOT'
 
 android {
     compileSdkVersion 19
@@ -26,23 +28,22 @@ android {
     }
 }
 
-dependencies {
-}
-
 
 def generatePom() {
     def pom = pom {
         project {
+            name 'Android-Easing'
             groupId project.group
             artifactId project.name
             version project.version
             description 'Light weight easing for Android'
             inceptionYear '2013'
             url 'http://blog.sephiroth.it'
+            packaging 'aar'
 
             licenses {
                 license {
-                    name 'Apach License, Version 2.0'
+                    name 'The Apache Software License, Version 2.0'
                     url 'http://www.apache.org/licenses/LICENSE-2.0'
                     distribution 'repo'
                 }
@@ -50,8 +51,8 @@ def generatePom() {
 
             scm {
                 url                 "https://github.com/sephiroth74/Android-Easing"
-                connection          "scm:git@github.com:sephiroth74/Android-Easing.git"
-                developerConnection "scm:git@github.com:sephiroth74/Android-Easing.git"
+                connection          "scm:git:git@github.com:sephiroth74/Android-Easing.git"
+                developerConnection "scm:git:git@github.com:sephiroth74/Android-Easing.git"
             }
 
 
@@ -64,18 +65,6 @@ def generatePom() {
                     roles {
                         role 'author'
                         role 'developer'
-                    }
-                }
-            }
-
-            repositories {
-                project.repositories.each { repo ->
-
-                    if (repo.name != 'MavenRepo' && repo.name != 'MavenLocal' && !repo.url.toString().startsWith('file:/') ) {
-                        repository {
-                            id = repo.name
-                            url = repo.url
-                        }
                     }
                 }
             }
@@ -93,31 +82,28 @@ task writePom {
     }
 }
 
+signing {
+    sign configurations.archives
+}
+
+artifacts {
+}
 
 uploadArchives {
     repositories {
-        if( project.hasProperty('username') && project.hasProperty('password')) {
-
-
-            mavenDeployer {
-                pom = generatePom()
-                configuration = configurations.deployerJars
-
-                repository(url: mavenUploadServer + mavenRepo + mavenReleases){
-                    authentication(userName: username, password: password)
-                }
-
-                snapshotRepository(url: mavenUploadServer + mavenRepo + mavenSnapshot){
-                    authentication(userName: username, password: password)
-                }
+        mavenDeployer {
+            beforeDeployment {
+                MavenDeployment deployment -> signing.signPom(deployment)
             }
-        } else {
-        }
-    }
+            pom = generatePom()
 
-    doLast {
-        if( !project.hasProperty('username') || !project.hasProperty('password')) {
-            logger.error '\tError: Cannot upload artifacts, username and password missing'
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword )
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword )
+            }
         }
     }
 }

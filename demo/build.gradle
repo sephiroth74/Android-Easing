@@ -10,6 +10,11 @@ apply plugin: 'android'
 
 repositories {
     mavenCentral()
+    mavenLocal()
+    maven {
+        name 'sonatype'
+        url uri('https://oss.sonatype.org/content/groups/staging')
+    }
 }
 
 android {
@@ -20,9 +25,6 @@ android {
         minSdkVersion 11
         targetSdkVersion 19
     }
-
-
-
 
     buildTypes {
         release {
@@ -37,5 +39,6 @@ android {
 
 dependencies {
 	compile 'com.android.support:appcompat-v7:+'
-    compile project(':library')
+    // compile project(':library')
+    compile 'it.sephiroth.android.library.easing:library:+'
 }
