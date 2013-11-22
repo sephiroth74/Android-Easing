@@ -1,21 +1,6 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
-    }
-}
+
 apply plugin: 'android'
 
-repositories {
-    mavenCentral()
-    mavenLocal()
-    maven {
-        name 'sonatype'
-        url uri('https://oss.sonatype.org/content/groups/staging')
-    }
-}
 
 android {
     compileSdkVersion 19
@@ -39,6 +24,6 @@ android {
 
 dependencies {
 	compile 'com.android.support:appcompat-v7:+'
-    // compile project(':library')
-    compile 'it.sephiroth.android.library.easing:library:+'
+    compile project(':library')
+    // compile 'it.sephiroth.android.library.easing:library:+'
 }

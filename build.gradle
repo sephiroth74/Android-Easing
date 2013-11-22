@@ -11,6 +11,15 @@ buildscript {
 
 
 allprojects {
-    apply plugin: 'maven-publish'
     apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }    
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.8'
 }
