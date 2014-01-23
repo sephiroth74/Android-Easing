@@ -4,7 +4,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "18.1.1"
+    buildToolsVersion "19.0.1"
 
     defaultConfig {
         minSdkVersion 11
@@ -25,5 +25,4 @@ android {
 dependencies {
 	compile 'com.android.support:appcompat-v7:+'
     compile project(':library')
-    // compile 'it.sephiroth.android.library.easing:library:+'
 }
