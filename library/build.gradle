@@ -3,7 +3,7 @@ apply plugin: 'signing'
 apply plugin: 'android-library'
 
 group 'it.sephiroth.android.library.easing'
-version '1.0.2'
+version '1.0.3'
 
 android {
     compileSdkVersion 19
@@ -32,6 +32,7 @@ def generatePom() {
     def pom = pom {
         project {
             name 'Android-Easing'
+            packaging 'aar'
             groupId project.group
             artifactId project.name
             version project.version
@@ -70,26 +71,9 @@ def generatePom() {
     }
 }
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.allSource
-}
-
-task writePom {
-    ext.pomXml = file("pom.xml")
-    inputs.file(project.buildFile)
-    outputs.file(pomXml)
-    doLast {
-        generatePom().writeTo(pomXml)
-    }
-}
-
 signing {
+    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
     sign configurations.archives
-}
-
-artifacts {
-    archives sourcesJar
 }
 
 uploadArchives {
@@ -110,6 +94,3 @@ uploadArchives {
         }
     }
 }
-
-build.dependsOn(writePom)
-uploadArchives.dependsOn(build)

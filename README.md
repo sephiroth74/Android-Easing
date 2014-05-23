@@ -7,7 +7,7 @@ Light weight android easing library.
 ## Setup
 Just add the following line to your `dependencies` group:
 
-    compile 'it.sephiroth.android.library.easing:library:+'
+    compile 'it.sephiroth.android.library.easing:android-easing:+'
 
 > In this way you'll always use the latest version
 
